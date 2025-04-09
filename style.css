@@ -128,9 +128,42 @@ input, textarea {
 .journal-entry:hover { background-color: #f8f9fa; }
 
 /* Game modal */
-.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-out; }
-.modal:not(.hidden) { opacity: 1; pointer-events: auto; } /* Control visibility via opacity */
-.modal-content { background-color: white; padding: 2rem; border-radius: 0.5rem; max-width: 90%; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.3s ease-out; width: 600px; /* Default width */ }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+    overflow-y: auto; /* Allow modal content to scroll if needed */
+}
+
+.modal:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.3s ease-out;
+    width: 600px; /* Default width */
+    margin: auto; /* Center vertically when content is shorter than viewport */
+}
+
+/* Ensure modal content animates properly */
 .modal:not(.hidden) .modal-content { transform: translateY(0); }
 .modal-content.max-w-md { width: 448px; }
 .modal-content.max-w-lg { width: 512px; }
