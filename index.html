@@ -948,13 +948,16 @@
     <!-- Bias Detail Modal -->
     <div id="biasDetailModal" class="modal hidden">
         <div class="modal-content max-w-2xl">
-            <div class="flex justify-between items-center mb-6 pb-4 border-b">
-                <div class="flex items-center">
-                    <h3 id="biasDetailTitle" class="text-2xl font-bold text-gray-800 mr-3">Bias Name</h3>
-                    <span id="biasDetailBadge"
-                        class="badge-unknown text-xs font-bold px-2 py-0.5 rounded-full uppercase">CATEGORY</span>
+            <div class="flex justify-between items-start mb-6 pb-4 border-b">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 flex-1 pr-4">
+                    <h3 id="biasDetailTitle" class="text-2xl font-bold text-gray-800">Bias Name</h3>
+                    <span id="biasDetailBadge" 
+                        class="badge-unknown text-xs font-bold px-2 py-0.5 rounded-full uppercase inline-block sm:inline">CATEGORY</span>
                 </div>
-                <button id="closeBiasDetailBtn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+                <button id="closeBiasDetailBtn" 
+                    class="text-gray-400 hover:text-gray-700 text-2xl flex-shrink-0">
+                    &times;
+                </button>
             </div>
             <div class="space-y-4">
                 <div>

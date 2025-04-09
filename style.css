@@ -171,6 +171,30 @@ input, textarea {
 .modal-content.max-w-2xl { width: 672px; }
 .modal-content.max-w-3xl { width: 768px; }
 
+#biasDetailModal .modal-content {
+    width: 100%;
+    max-width: 42rem; /* max-w-2xl equivalent */
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+    #biasDetailModal #biasDetailTitle {
+        line-height: 1.2;
+        margin-right: 0;
+    }
+
+    #biasDetailModal #biasDetailBadge {
+        width: fit-content;
+    }
+
+    #biasDetailModal #closeBiasDetailBtn {
+        padding: 0.5rem;
+        margin: -0.5rem;
+        position: relative;
+        top: -2px;
+    }
+}
+
 /* Points animation */
 .points-animation { position: fixed; color: #4F46E5; font-weight: bold; z-index: 100; pointer-events: none; animation: pointsFadeUp 1.5s ease-out forwards; }
 @keyframes pointsFadeUp { 0% { opacity: 0; transform: translateY(20px) scale(0.8); } 20% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-60px) scale(0.6); } }
