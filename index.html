@@ -101,6 +101,12 @@
                 <li><a href="#main-game-area"
                         class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
                         data-tab="leaderboard"><i class="fas fa-trophy w-6 mr-2 text-center"></i> Leaderboard</a></li>
+                
+                <!-- Added a divider for better organization -->
+                <hr class="my-4 border-gray-200 dark:border-gray-600">
+                <li><a href="#achievementsSection"
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="achievements"><i class="fas fa-award w-6 mr-2 text-center"></i> Achievements</a></li>
             </ul>
             <hr class="my-4 border-gray-200 dark:border-gray-600">
             <div class="flex items-center justify-between">
@@ -196,94 +202,6 @@
                         class="mt-3 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium py-1.5 px-3 rounded-lg text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
                         Check It Out
                     </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Achievements Section -->
-        <div id="achievementsSection" class="bg-white rounded-lg shadow-lg mb-8 p-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Achievements</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                <!-- Achievement items will be populated/updated by JS -->
-                <div class="text-center">
-                    <div class="achievement-badge bg-red-700 mx-auto locked-badge"
-                        title="Memory Master: Explore all memory biases" data-achievement="memory-master">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Memory Master</p>
-                    <p class="text-xs text-gray-500">0/6 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
-                        title="Social Butterfly: Explore all social biases" data-achievement="social-butterfly">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Social Butterfly</p>
-                    <p class="text-xs text-gray-500">0/12 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
-                        title="Perpetual Learner: Explore all learning biases" data-achievement="perpetual-learner">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Perpetual Learner</p>
-                    <p class="text-xs text-gray-500">0/5 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-purple-700 mx-auto locked-badge"
-                        title="Belief Breaker: Explore all belief biases" data-achievement="belief-breaker">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Belief Breaker</p>
-                    <p class="text-xs text-gray-500">0/17 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
-                        title="Money Minded: Explore all money biases" data-achievement="money-minded">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Money Minded</p>
-                    <p class="text-xs text-gray-500">0/4 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-blue-700 mx-auto locked-badge"
-                        title="Political Pundit: Explore all politics biases" data-achievement="political-pundit">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Political Pundit</p>
-                    <p class="text-xs text-gray-500">0/2 biases</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-indigo-700 mx-auto locked-badge"
-                        title="Quiz Master: Complete 10 bias challenges" data-achievement="quiz-master">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Quiz Master</p>
-                    <p class="text-xs text-gray-500">0/10 quizzes</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-pink-700 mx-auto locked-badge"
-                        title="Journal Keeper: Create 5 journal entries" data-achievement="journal-keeper">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Journal Keeper</p>
-                    <p class="text-xs text-gray-500">0/5 entries</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
-                        title="Streak Seeker: Maintain a 7-day streak" data-achievement="streak-seeker">
-                        <i class="fas fa-fire-alt"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Streak Seeker</p>
-                    <p class="text-xs text-gray-500">0/7 days</p>
-                </div>
-                <div class="text-center">
-                    <div class="achievement-badge bg-gray-700 mx-auto locked-badge" title="Bias Expert: Reach level 10"
-                        data-achievement="bias-expert">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <p class="text-sm mt-2 font-medium text-gray-700">Bias Expert</p>
-                    <p class="text-xs text-gray-500">Level 1/10</p>
                 </div>
             </div>
         </div>
@@ -572,6 +490,94 @@
                 </div>
             </div> <!-- End gameContent -->
         </div> <!-- End Game Controls & Content Area -->
+
+        <!-- Achievements Section -->
+        <div id="achievementsSection" class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Achievements</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <!-- Achievement items will be populated/updated by JS -->
+                <div class="text-center">
+                    <div class="achievement-badge bg-red-700 mx-auto locked-badge"
+                        title="Memory Master: Explore all memory biases" data-achievement="memory-master">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Memory Master</p>
+                    <p class="text-xs text-gray-500">0/6 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
+                        title="Social Butterfly: Explore all social biases" data-achievement="social-butterfly">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Social Butterfly</p>
+                    <p class="text-xs text-gray-500">0/12 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
+                        title="Perpetual Learner: Explore all learning biases" data-achievement="perpetual-learner">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Perpetual Learner</p>
+                    <p class="text-xs text-gray-500">0/5 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-purple-700 mx-auto locked-badge"
+                        title="Belief Breaker: Explore all belief biases" data-achievement="belief-breaker">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Belief Breaker</p>
+                    <p class="text-xs text-gray-500">0/17 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
+                        title="Money Minded: Explore all money biases" data-achievement="money-minded">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Money Minded</p>
+                    <p class="text-xs text-gray-500">0/4 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-blue-700 mx-auto locked-badge"
+                        title="Political Pundit: Explore all politics biases" data-achievement="political-pundit">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Political Pundit</p>
+                    <p class="text-xs text-gray-500">0/2 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-indigo-700 mx-auto locked-badge"
+                        title="Quiz Master: Complete 10 bias challenges" data-achievement="quiz-master">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Quiz Master</p>
+                    <p class="text-xs text-gray-500">0/10 quizzes</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-pink-700 mx-auto locked-badge"
+                        title="Journal Keeper: Create 5 journal entries" data-achievement="journal-keeper">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Journal Keeper</p>
+                    <p class="text-xs text-gray-500">0/5 entries</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
+                        title="Streak Seeker: Maintain a 7-day streak" data-achievement="streak-seeker">
+                        <i class="fas fa-fire-alt"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Streak Seeker</p>
+                    <p class="text-xs text-gray-500">0/7 days</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-gray-700 mx-auto locked-badge" title="Bias Expert: Reach level 10"
+                        data-achievement="bias-expert">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Bias Expert</p>
+                    <p class="text-xs text-gray-500">Level 1/10</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Introduction Section (Optional - Can be removed if redundant) -->
         <section class="mb-12 bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">

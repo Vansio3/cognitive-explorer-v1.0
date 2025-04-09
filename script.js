@@ -1287,26 +1287,29 @@ function setupEventListeners() {
     // Mobile Nav Links
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default anchor behavior
-
+            e.preventDefault();
+    
             const tabId = link.dataset.tab;
-            const targetSelector = link.getAttribute('href'); // Get the href value (e.g., "#main-game-area")
-
-            // 1. Scroll to the target section
-            if (targetSelector && targetSelector.startsWith('#')) {
-                const targetElement = document.querySelector(targetSelector);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-
-            // 2. Switch the tab content within the target section
+            const targetSelector = link.getAttribute('href');
+    
+            // First switch the tab if needed
             if (tabId) {
                 switchTab(tabId);
             }
-
-            // 3. Close the menu
+    
+            // Close the menu
             closeMenu();
+    
+            // Add a small delay to allow DOM updates to complete
+            setTimeout(() => {
+                // Then scroll to the target section
+                if (targetSelector && targetSelector.startsWith('#')) {
+                    const targetElement = document.querySelector(targetSelector);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }, 100); // Small delay to ensure DOM updates are complete
         });
     });
 

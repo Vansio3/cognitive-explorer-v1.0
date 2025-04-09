@@ -116,7 +116,7 @@ input, textarea {
 .progress-bar { height: 8px; transition: width 0.5s ease-in-out; }
 .achievement-badge { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 24px; color: white; transition: all 0.3s ease; }
 .achievement-badge:hover { transform: scale(1.1); }
-.locked-badge { opacity: 0.5; filter: grayscale(1); }
+.locked-badge { opacity: 0.5; filter: grayscale(1); background-color: #4B5563 !important; }
 .quiz-option { transition: all 0.2s ease; cursor: pointer; border: 2px solid transparent; }
 .quiz-option:hover { transform: translateX(3px); border-left: 3px solid #4F46E5; }
 .quiz-option.selected { border-color: #4F46E5; }
@@ -389,6 +389,7 @@ body.dark .locked-indicator { background-color: rgba(200, 200, 200, 0.7); color:
 body.dark .locked-bias button, body.dark .locked-bias .read-more-btn { background-color: #4b5563 !important; color: #9ca3af !important; border-color: #6b7280 !important; }
 body.dark .locked-bias .read-more-btn { background-color: transparent !important; }
 body.dark .locked-bias .explore-status span { color: #9ca3af !important; background-color: #374151 !important; } /* Adjust locked status text/bg */
+body.dark .locked-badge {background-color: #2d3238 !important; /* gray-800 - darker shade for dark mode */}
 
 /* Dark Mode for Mobile Nav */
 body.dark #mobileNav { background-color: #1f2937; } /* gray-800 */
