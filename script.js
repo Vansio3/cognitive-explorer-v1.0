@@ -574,31 +574,6 @@ function renderBiases() {
                   <p class="text-gray-500 mt-2">Try adjusting your search or filters.</p>`;
         }
     }
-    // --- End No Results Logic ---
-
-    updateFilterButtonsStyle(); // Ensure this is called AFTER appending
-}
-
-function updateFilterButtonsStyle() {
-    // Select ALL filter buttons, including the new ones
-    const allFilterButtons = document.querySelectorAll('.filter-buttons .filter-button'); // Ensure selection is broad enough
-
-    allFilterButtons.forEach(button => {
-        const buttonCategory = button.dataset.category;
-        const isActive = buttonCategory === gameState.currentFilter;
-
-        // Apply active styles (dark background, white text)
-        button.classList.toggle('bg-gray-800', isActive);
-        button.classList.toggle('text-white', isActive);
-        button.classList.toggle('border-gray-800', isActive); // Ensure active border matches bg
-
-        // Apply inactive styles (white background, dark text, border)
-        button.classList.toggle('bg-white', !isActive);
-        button.classList.toggle('hover:bg-gray-100', !isActive);
-        button.classList.toggle('text-gray-800', !isActive);
-        button.classList.toggle('border', !isActive);
-        button.classList.toggle('border-gray-300', !isActive);
-    });
 }
 
 function showRandomBias() {
@@ -1209,6 +1184,16 @@ function setupEventListeners() {
     // REMOVE the specific showAllBtn listener if covered by the generic filter button listener above
     // showAllBtn.addEventListener('click', () => { ... }); // Remove or comment out
 
+    // Replace the filter buttons event listener with this:
+    const categoryFilter = document.getElementById('categoryFilter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', (e) => {
+            gameState.currentFilter = e.target.value;
+            featuredBiasSection.classList.add('hidden');
+            biasesGrid.classList.remove('hidden');
+            renderBiases();
+        });
+    }
 
     // Daily
     checkInBtn?.addEventListener('click', handleCheckIn); // Added optional chaining

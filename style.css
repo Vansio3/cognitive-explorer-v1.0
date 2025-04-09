@@ -409,3 +409,29 @@ body.dark .theme-toggle-checkbox:checked + .theme-toggle-label { background-colo
 
 /* Adjust badge text color for dark mode if needed */
 body.dark .badge-learning { color: #1f2937; } /* Ensure dark text on yellow */
+
+/* Add these styles for the dropdown in Explore */
+#categoryFilter {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#categoryFilter:hover {
+    border-color: #6366f1; /* indigo-500 */
+}
+
+/* Dark mode support */
+body.dark #categoryFilter {
+    background-color: #4b5563; /* gray-600 */
+    border-color: #6b7280; /* gray-500 */
+    color: #f9fafb; /* gray-50 */
+}
+
+body.dark #categoryFilter:hover {
+    border-color: #818cf8; /* indigo-400 */
+}
+
+body.dark #categoryFilter option {
+    background-color: #4b5563; /* gray-600 */
+    color: #f9fafb; /* gray-50 */
+}

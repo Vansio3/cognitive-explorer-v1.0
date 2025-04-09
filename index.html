@@ -101,7 +101,7 @@
                 <li><a href="#main-game-area"
                         class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
                         data-tab="leaderboard"><i class="fas fa-trophy w-6 mr-2 text-center"></i> Leaderboard</a></li>
-                
+
                 <!-- Added a divider for better organization -->
                 <hr class="my-4 border-gray-200 dark:border-gray-600">
                 <li><a href="#achievementsSection"
@@ -231,7 +231,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
                         <div class="mb-4 md:mb-0">
                             <h3 class="text-xl font-semibold mb-1 text-gray-800">Explore Cognitive Biases</h3>
-                            <p class="text-gray-600">Filter, search, or get a random bias (Level up to unlock more!)
+                            <p class="text-gray-600 text-sm mt-1">Filter, search, or get a random bias
                             </p>
                         </div>
                         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
@@ -245,41 +245,26 @@
                         <div class="relative">
                             <input type="text" id="searchInput"
                                 placeholder="Search unlocked biases by name, category, description..."
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 pl-10">
+                                class="w-full px-4 py-2 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 pl-10">
                             <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
                         </div>
                     </div>
-                    <div class="filter-buttons flex flex-wrap gap-2 mb-8">
-                        <button
-                            class="filter-button all-with-locked-btn bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="all-with-locked">Show All</button> <!-- New Button -->
-                        <button
-                            class="filter-button all-btn bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="all">All Unlocked</button> <!-- Changed text -->
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="memory"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#FF6B6B;"></span>Memory</button>
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="social"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#4ECDC4;"></span>Social</button>
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="learning"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#FFD166;"></span>Learning</button>
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="belief"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#6A0572;"></span>Belief</button>
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="money"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#5D8233;"></span>Money</button>
-                        <button
-                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
-                            data-category="politics"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
-                                style="background-color:#457B9D;"></span>Politics</button>
+                    <div class="filter-buttons mb-8">
+                        <select id="categoryFilter"
+                            class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-sm font-medium">
+                            <option value="all" selected>All Unlocked</option>
+                            <option value="all-with-locked">Show All (Including Locked)</option>
+                            <option value="memory" class="flex items-center">
+                                <span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                    style="background-color:#FF6B6B;"></span>
+                                Memory
+                            </option>
+                            <option value="social">Social</option>
+                            <option value="learning">Learning</option>
+                            <option value="belief">Belief</option>
+                            <option value="money">Money</option>
+                            <option value="politics">Politics</option>
+                        </select>
                     </div>
                     <!-- Featured Bias Section (for random bias) -->
                     <section id="featuredBiasSection" class="mb-8 hidden">
