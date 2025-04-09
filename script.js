@@ -554,9 +554,9 @@ function renderBiases() {
 
         // --- Filter Logic ---
         // 1. Check level filter: ONLY skip locked biases if the 'all' (All Unlocked) filter is active.
-        // if (gameState.currentFilter === 'all' && !isUnlocked) {
-        //     return; // Skip locked biases only for the "All Unlocked" view
-        // }
+        if (gameState.currentFilter === 'all' && !isUnlocked) {
+            return; // Skip locked biases only for the "All Unlocked" view
+        }
 
         // 2. Check category filter: Skip if a category filter is active AND it doesn't match.
         //    ('all' and 'all-with-locked' filters pass this check).
