@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive Bias Explorer: The Game</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
+    <link rel="shortcut icon" href="img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-100 relative min-h-screen"> <!-- Added relative and min-h-screen -->
+    <div id="stickyHeader"
+        class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-30 transition-transform duration-300">
+        <div class="container mx-auto px-4 pr-16 py-2">
+            <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center">
+                    <!-- Left side - Level and Points -->
+                    <div class="flex items-center space-x-4">
+                        <img src="img/logo.png" alt="Cognitive Explorer Logo" class="h-6 w-6 mr-4">
+                        <div class="flex items-center">
+                            <span class="text-gray-700 dark:text-gray-300 mr-2 text-sm font-medium">Level:</span>
+                            <div class="level-indicator">
+                                <span id="userLevelSticky">1</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-gray-700 dark:text-gray-300 mr-2 text-sm font-medium">Points:</span>
+                            <div class="bg-indigo-100 dark:bg-indigo-900 px-3 py-1 rounded-full">
+                                <span id="userPointsSticky"
+                                    class="font-bold text-indigo-700 dark:text-indigo-300">0</span>
+                                <span class="text-indigo-500 dark:text-indigo-400 text-sm ml-1">pts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right side - Progress Bars -->
+                    <div class="flex items-center space-x-4 flex-1 max-w-md ml-4">
+                        <div class="flex-1">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 dark:text-gray-400 mr-1">XP</span>
+                                <span class="text-indigo-600 dark:text-indigo-400">
+                                    <span id="currentXPSticky">0</span>/<span id="requiredXPSticky">100</span>
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                <div id="levelProgressBarSticky" class="bg-indigo-600 h-1.5 rounded-full progress-bar"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 dark:text-gray-400 mr-1">Biases</span>
+                                <span class="text-green-600 dark:text-green-400">
+                                    <span id="biasesExploredSticky">0</span>/<span id="totalBiasesSticky">50</span>
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                <div id="biasesProgressBarSticky" class="bg-green-500 h-1.5 rounded-full progress-bar"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <canvas id="confetti" class="hidden"></canvas> <!-- Canvas for confetti library -->
+
+    <!-- Burger Menu Button (Top Right) -->
+    <button id="burgerBtn" class="fixed top-4 right-4 z-50 text-gray-600 hover:text-indigo-600 focus:outline-none"
+        title="Menu">
+        <i class="fas fa-bars text-2xl"></i>
+    </button>
+
+    <!-- Mobile Navigation Menu (Initially Hidden) -->
+    <nav id="mobileNav"
+        class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-40 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Menu</h3>
+                <button id="closeNavBtn"
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <ul class="space-y-2">
+                <li><a href="#main-game-area"
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="explore"><i class="fas fa-compass w-6 mr-2 text-center"></i> Explore</a></li>
+                <li><a href="#main-game-area"
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="challenge"><i class="fas fa-gamepad w-6 mr-2 text-center"></i> Challenges</a></li>
+                <li><a href="#main-game-area"
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="journal"><i class="fas fa-journal-whills w-6 mr-2 text-center"></i> Journal</a></li>
+                <li><a href="#main-game-area"
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="leaderboard"><i class="fas fa-trophy w-6 mr-2 text-center"></i> Leaderboard</a></li>
+            </ul>
+            <hr class="my-4 border-gray-200 dark:border-gray-600">
+            <div class="flex items-center justify-between">
+                <label for="themeToggleMobile" class="text-sm text-gray-600 dark:text-gray-300">Dark Mode</label>
+                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="themeToggleMobile" id="themeToggleMobile"
+                        class="theme-toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" />
+                    <label for="themeToggleMobile"
+                        class="theme-toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Game Dashboard -->
+        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-lg mb-8 p-6"> <!-- Added dark mode class -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-3xl font-bold text-gray-800 flex items-center">
+                        <img src="img/logo.png" alt="Cognitive Explorer Logo" class="h-10 w-10 mr-3">
+                        <!-- Added logo image -->
+                        <span>Cognitive Explorer</span>
+                        <span
+                            class="ml-3 bg-indigo-600 text-white text-xs rounded-full px-2 py-1 uppercase font-semibold tracking-wide">BETA</span>
+                    </h2>
+                    <p class="text-gray-600 mt-1">Master cognitive biases through interactive learning</p>
+                </div>
+                <div class="flex flex-row items-center gap-4 w-full md:w-auto">
+                    <!-- Changed flex-col to flex-row and added gap -->
+                    <div class="flex items-center">
+                        <span class="text-gray-700 mr-2 text-sm font-medium">Level:</span>
+                        <div class="level-indicator">
+                            <span id="userLevel">1</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-gray-700 mr-2 text-sm font-medium">Points:</span>
+                        <div class="bg-indigo-100 px-3 py-1 rounded-full">
+                            <span id="userPoints" class="font-bold text-indigo-700">0</span>
+                            <span class="text-indigo-500 text-sm ml-1">pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="mb-5">
+                <div class="flex justify-between mb-1">
+                    <span class="text-sm font-medium text-gray-700">Level Progress</span>
+                    <span class="text-sm font-medium text-indigo-700"><span id="currentXP">0</span> / <span
+                            id="requiredXP">100</span> XP</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div id="levelProgressBar" class="bg-indigo-600 h-2 rounded-full progress-bar" style="width: 0%">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <div class="flex justify-between mb-1">
+                    <span class="text-sm font-medium text-gray-700">Biases Explored</span>
+                    <span class="text-sm font-medium text-indigo-700"><span id="biasesExplored">0</span> / <span
+                            id="totalBiases">50</span></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div id="biasesProgressBar" class="bg-green-500 h-2 rounded-full progress-bar" style="width: 0%">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak & Daily Pick  /-->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gradient-to-r from-yellow-500 to-pink-500 rounded-lg p-4 text-white shadow-md">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold">Daily Streak</h3>
+                        <div class="flex items-center bg-black bg-opacity-30 px-2 py-1 rounded-full">
+                            <i class="fas fa-fire text-yellow-300 mr-1.5 text-lg"></i>
+                            <span id="streakCount" class="text-xl font-bold">0</span>
+                        </div>
+                    </div>
+                    <p class="text-white text-opacity-90 mt-1 text-sm">Visit daily to maintain your streak!</p>
+                    <button id="checkInBtn"
+                        class="mt-3 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium py-1.5 px-3 rounded-lg text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 disabled:opacity-70 disabled:cursor-not-allowed">
+                        Check In Today
+                    </button>
+                </div>
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg p-4 text-white shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Daily Pick</h3>
+                    <p id="dailyPickText" class="text-white text-opacity-90 text-sm h-10 flex items-center">Learn
+                        about the "Confirmation Bias" today!</p> <!-- Fixed height for consistency -->
+                    <button id="dailyPickBtn"
+                        class="mt-3 bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium py-1.5 px-3 rounded-lg text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                        Check It Out
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div id="achievementsSection" class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Achievements</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <!-- Achievement items will be populated/updated by JS -->
+                <div class="text-center">
+                    <div class="achievement-badge bg-red-700 mx-auto locked-badge"
+                        title="Memory Master: Explore all memory biases" data-achievement="memory-master">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Memory Master</p>
+                    <p class="text-xs text-gray-500">0/6 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
+                        title="Social Butterfly: Explore all social biases" data-achievement="social-butterfly">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Social Butterfly</p>
+                    <p class="text-xs text-gray-500">0/12 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
+                        title="Perpetual Learner: Explore all learning biases" data-achievement="perpetual-learner">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Perpetual Learner</p>
+                    <p class="text-xs text-gray-500">0/5 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-purple-700 mx-auto locked-badge"
+                        title="Belief Breaker: Explore all belief biases" data-achievement="belief-breaker">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Belief Breaker</p>
+                    <p class="text-xs text-gray-500">0/17 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-green-700 mx-auto locked-badge"
+                        title="Money Minded: Explore all money biases" data-achievement="money-minded">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Money Minded</p>
+                    <p class="text-xs text-gray-500">0/4 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-blue-700 mx-auto locked-badge"
+                        title="Political Pundit: Explore all politics biases" data-achievement="political-pundit">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Political Pundit</p>
+                    <p class="text-xs text-gray-500">0/2 biases</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-indigo-700 mx-auto locked-badge"
+                        title="Quiz Master: Complete 10 bias challenges" data-achievement="quiz-master">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Quiz Master</p>
+                    <p class="text-xs text-gray-500">0/10 quizzes</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-pink-700 mx-auto locked-badge"
+                        title="Journal Keeper: Create 5 journal entries" data-achievement="journal-keeper">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Journal Keeper</p>
+                    <p class="text-xs text-gray-500">0/5 entries</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-yellow-700 mx-auto locked-badge"
+                        title="Streak Seeker: Maintain a 7-day streak" data-achievement="streak-seeker">
+                        <i class="fas fa-fire-alt"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Streak Seeker</p>
+                    <p class="text-xs text-gray-500">0/7 days</p>
+                </div>
+                <div class="text-center">
+                    <div class="achievement-badge bg-gray-700 mx-auto locked-badge" title="Bias Expert: Reach level 10"
+                        data-achievement="bias-expert">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <p class="text-sm mt-2 font-medium text-gray-700">Bias Expert</p>
+                    <p class="text-xs text-gray-500">Level 1/10</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Controls & Content Area -->
+        <div id="main-game-area" class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-x-4 gap-y-2 mb-6 border-b border-gray-200 pb-3">
+                <button id="exploreBtn" class="tab-button py-2 px-3 text-base font-medium flex items-center">
+                    <i class="fas fa-compass mr-2"></i> Explore
+                </button>
+                <button id="challengeBtn" class="tab-button py-2 px-3 text-base font-medium flex items-center">
+                    <i class="fas fa-gamepad mr-2"></i> Challenges
+                </button>
+                <button id="journalBtn" class="tab-button py-2 px-3 text-base font-medium flex items-center">
+                    <i class="fas fa-journal-whills mr-2"></i> Journal
+                </button>
+                <button id="leaderboardBtn" class="tab-button py-2 px-3 text-base font-medium flex items-center">
+                    <i class="fas fa-trophy mr-2"></i> Leaderboard
+                </button>
+            </div>
+
+            <!-- Main Game Content Area -->
+            <div id="gameContent">
+                <!-- Explore Tab Content -->
+                <div id="exploreContent" class="game-tab hidden">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                        <div class="mb-4 md:mb-0">
+                            <h3 class="text-xl font-semibold mb-1 text-gray-800">Explore Cognitive Biases</h3>
+                            <p class="text-gray-600">Filter, search, or get a random bias (Level up to unlock more!)
+                            </p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                            <button id="randomBiasBtn"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center whitespace-nowrap">
+                                <i class="fas fa-random mr-2"></i> Random Bias
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="text" id="searchInput"
+                                placeholder="Search unlocked biases by name, category, description..."
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 pl-10">
+                            <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="filter-buttons flex flex-wrap gap-2 mb-8">
+                        <button
+                            class="filter-button all-with-locked-btn bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="all-with-locked">Show All</button> <!-- New Button -->
+                        <button
+                            class="filter-button all-btn bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="all">All Unlocked</button> <!-- Changed text -->
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="memory"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#FF6B6B;"></span>Memory</button>
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="social"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#4ECDC4;"></span>Social</button>
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="learning"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#FFD166;"></span>Learning</button>
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="belief"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#6A0572;"></span>Belief</button>
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="money"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#5D8233;"></span>Money</button>
+                        <button
+                            class="filter-button bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium"
+                            data-category="politics"><span class="inline-block w-3 h-3 rounded-full mr-1.5"
+                                style="background-color:#457B9D;"></span>Politics</button>
+                    </div>
+                    <!-- Featured Bias Section (for random bias) -->
+                    <section id="featuredBiasSection" class="mb-8 hidden">
+                        <div id="featuredBias" class="bg-white rounded-lg border border-indigo-200 shadow-lg p-8">
+                            <!-- Populated by JS -->
+                        </div>
+                    </section>
+                    <!-- Biases Grid -->
+                    <section id="biasesGrid">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="biasesContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </section>
+                    <!-- No Results Message -->
+                    <div id="noResultsMessage" class="hidden text-center py-16">
+                        <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-600">No biases found</h3>
+                        <p class="text-gray-500 mt-2">Try adjusting your search or filters, or level up to unlock
+                            more!</p>
+                    </div>
+                </div>
+
+                <!-- Challenge Tab Content -->
+                <div id="challengeContent" class="game-tab hidden">
+                    <div class="text-center py-10 max-w-lg mx-auto">
+                        <div class="mx-auto text-indigo-600 mb-6">
+                            <i class="fas fa-brain text-6xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Challenge Your Knowledge</h3>
+                        <p class="text-gray-600 mb-8">Test your understanding of cognitive biases with quizzes and
+                            interactive scenarios. Earn points and climb the leaderboard!</p>
+                        <div class="grid gap-4">
+                            <button id="startQuizBtn"
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center text-lg">
+                                <i class="fas fa-play mr-2"></i> Start Quiz Challenge
+                            </button>
+                            <button id="scenarioBtn"
+                                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center text-lg">
+                                <i class="fas fa-theater-masks mr-2"></i> Interactive Scenario
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Journal Tab Content -->
+                <div id="journalContent" class="game-tab hidden">
+                    <div class="mb-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                            <div class="mb-3 sm:mb-0">
+                                <h3 class="text-xl font-semibold text-gray-800">Your Bias Journal</h3>
+                                <p class="text-gray-600 text-sm mt-1">Reflect on biases you encounter in daily life.</p>
+                            </div>
+                            <button id="addJournalEntryBtn"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center whitespace-nowrap">
+                                <i class="fas fa-plus mr-2"></i> New Entry
+                            </button>
+                        </div>
+                        <div id="journalEntriesContainer" class="space-y-4">
+                            <!-- Populated by JS -->
+                            <div class="text-center py-16 text-gray-500">
+                                <i class="fas fa-book-open text-4xl mb-4"></i>
+                                <p>No journal entries yet. Add your first reflection!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Tab Content -->
+                <div id="leaderboardContent" class="game-tab hidden">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Top Cognitive Explorers</h3>
+                        <p class="text-gray-600 text-sm mb-6">See how you stack up against other bias masters!
+                            (Leaderboard is currently simulated).</p>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Rank</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Explorer</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Level</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Points</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Achievements</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <!-- Placeholder Data -->
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">1</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                    <span class="text-indigo-800 font-bold">E</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Emma Thompson</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">15</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">2,450</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">8/10</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">2</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                    <span class="text-green-800 font-bold">J</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">James Wilson</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">14</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">2,105</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">7/10</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">3</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                    <span class="text-yellow-800 font-bold">S</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">12</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">1,875</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">6/10</div>
+                                        </td>
+                                    </tr>
+                                    <!-- User Row -->
+                                    <tr id="userRankRow" class="bg-indigo-50 font-semibold">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">--</div>
+                                        </td> <!-- Rank placeholder -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                                    <span class="text-purple-800 font-bold">Y</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm text-gray-900">You</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">1</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">0</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">0/10</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-6">
+                            <button id="shareLeaderboardBtn"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 inline-flex items-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <i class="fas fa-share-alt mr-2"></i> Share Your Progress
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End gameContent -->
+        </div> <!-- End Game Controls & Content Area -->
+
+        <!-- Introduction Section (Optional - Can be removed if redundant) -->
+        <section class="mb-12 bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">What Are Cognitive Biases?</h2>
+            <p class="text-lg mb-4 text-gray-700">Cognitive biases are systematic patterns of deviation from norm or
+                rationality in judgment. They are mental shortcuts (heuristics) that help us make sense of the world
+                quickly, but can sometimes lead to errors in thinking.</p>
+            <p class="text-lg mb-6 text-gray-700">Understanding these biases helps us make more objective decisions and
+                recognize potential pitfalls in our own reasoning and the reasoning of others.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="font-semibold text-indigo-800 text-lg mb-1">Why Learn?</h3>
+                    <p class="text-sm text-indigo-700">Improve decision-making in personal & professional life.</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                    <h3 class="font-semibold text-green-800 text-lg mb-1">How They Form</h3>
+                    <p class="text-sm text-green-700">Result from information processing shortcuts, motivations, social
+                        pressure.</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                    <h3 class="font-semibold text-yellow-800 text-lg mb-1">Mitigation</h3>
+                    <p class="text-sm text-yellow-700">Awareness, seeking feedback, and structured thinking are key.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-gray-500 text-sm pb-8">
+            <p>Bias data adapted from various sources including TitleMax infographic.</p>
+            <p class="mt-1">© 2025 Cognitive Bias Explorer. Educational purposes only.</p>
+            <button id="resetProgressBtn" class="mt-4 text-xs text-red-600 hover:text-red-800 underline">Reset All
+                Progress</button>
+        </footer>
+
+    </div> <!-- End Container -->
+
+    <!-- Settings Panel (Removed, functionality moved to mobileNav) -->
+
+    <!-- MODALS -->
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal hidden">
+        <div class="modal-content max-w-3xl">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                <h3 id="quizTitle" class="text-2xl font-bold text-gray-800">Bias Challenge</h3>
+                <button id="closeQuizBtn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <div id="quizContent">
+                <div id="quizQuestion" class="mb-8">
+                    <div class="bg-indigo-50 p-6 rounded-lg mb-6 border border-indigo-100">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Scenario:</h4>
+                        <p class="text-gray-700 leading-relaxed" id="scenarioText">Scenario text loads here...</p>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Which cognitive bias is most likely at play?
+                    </h4>
+                    <div id="quizOptions" class="space-y-3">
+                        <!-- Options populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Result shown after submit -->
+                <div id="quizResult" class="hidden mt-6 pt-4 border-t">
+                    <div id="correctAnswer" class="bg-green-50 border border-green-200 p-4 rounded-lg mb-4 hidden">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-green-500 mr-3 pt-1"><i
+                                    class="fas fa-check-circle text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-green-800">Correct!</h4>
+                                <p class="text-sm text-green-700 mt-1">The bias is indeed the <strong
+                                        id="correctBiasName">Bias Name</strong>.</p>
+                                <p class="text-xs text-green-600 mt-2 italic" id="correctExplanation">Explanation loads
+                                    here...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="wrongAnswer" class="bg-red-50 border border-red-200 p-4 rounded-lg mb-4 hidden">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-red-500 mr-3 pt-1"><i
+                                    class="fas fa-times-circle text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-red-800">Not quite!</h4>
+                                <p class="text-sm text-red-700 mt-1">This scenario is an example of the <strong
+                                        id="actualBiasName">Bias Name</strong>.</p>
+                                <p class="text-xs text-red-600 mt-2 italic" id="wrongExplanation">Explanation loads
+                                    here...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Next/End buttons appear here -->
+                    <div class="flex justify-end mt-4">
+                        <button id="nextQuizBtn"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200 hidden">Next
+                            Question <i class="fas fa-arrow-right ml-2"></i></button>
+                        <button id="endQuizBtn"
+                            class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200 hidden">Finish
+                            Quiz <i class="fas fa-check ml-2"></i></button>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-8">
+                    <button id="submitQuizBtn"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        Submit Answer
+                    </button>
+                </div>
+            </div>
+
+            <div id="quizComplete" class="hidden text-center py-8">
+                <div class="mb-6">
+                    <div class="text-indigo-600 mb-4"><i class="fas fa-trophy text-6xl text-yellow-400"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Challenge Complete!</h3>
+                    <p class="text-gray-600">You correctly identified <strong id="correctCount"
+                            class="text-indigo-600">0</strong> out of <strong id="totalCount">5</strong> biases.</p>
+                </div>
+                <div class="bg-indigo-50 p-6 rounded-lg mb-6 border border-indigo-100">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-3">You've earned:</h4>
+                    <div class="flex justify-center items-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-indigo-600 mb-1">+<span id="pointsEarned">0</span></div>
+                            <p class="text-sm text-gray-700">Points</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-1">+<span id="xpEarned">0</span></div>
+                            <p class="text-sm text-gray-700">XP</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-4 mt-8">
+                    <button id="newQuizBtn"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                            class="fas fa-redo mr-2"></i> New Challenge</button>
+                    <button id="closeQuizCompleteBtn"
+                        class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                            class="fas fa-times mr-2"></i> Close</button>
+                </div>
+                <div class="mt-6 flex justify-center"><button id="shareQuizResultBtn"
+                        class="text-sm text-blue-600 hover:text-blue-800 hover:underline"><i
+                            class="fas fa-share-alt mr-1"></i> Share Results</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Entry Modal -->
+    <div id="journalModal" class="modal hidden">
+        <div class="modal-content max-w-2xl">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                <h3 class="text-2xl font-bold text-gray-800">Add Journal Entry</h3>
+                <button id="closeJournalBtn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="journalTitle" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" id="journalTitle"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="e.g., Confirmation bias watching news">
+                </div>
+                <div>
+                    <label for="journalBias" class="block text-sm font-medium text-gray-700 mb-1">Related Bias
+                        (Optional)</label>
+                    <select id="journalBias"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                        <option value="">-- Select a bias (optional) --</option>
+                        <!-- Options populated by JS (filtered by level) -->
+                    </select>
+                </div>
+                <div>
+                    <label for="journalContentInput" class="block text-sm font-medium text-gray-700 mb-1">Describe the
+                        Situation & Reflection</label>
+                    <textarea id="journalContentInput" rows="6"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Describe when and how you noticed the bias (in yourself or others). What was the outcome? How might you approach it differently next time?"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end mt-6 pt-4 border-t">
+                <button id="saveJournalBtn"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"><i
+                        class="fas fa-save mr-2"></i> Save Entry</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Scenario Modal -->
+    <div id="scenarioModal" class="modal hidden">
+        <div class="modal-content max-w-3xl">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                <h3 class="text-2xl font-bold text-gray-800">Interactive Scenario: Social Media Feed</h3>
+                <button id="closeScenarioBtn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <div id="scenarioContainer">
+                <div class="bg-indigo-50 p-4 rounded-lg mb-6 border border-indigo-100 text-sm text-indigo-800">
+                    <p>You're scrolling through a simulated social media feed. Pay attention to your immediate reactions
+                        and thoughts about each post. How might cognitive biases be influencing your perception?</p>
+                </div>
+
+                <!-- Simulated Feed -->
+                <div class="border border-gray-200 rounded-lg mb-6 overflow-hidden bg-white divide-y divide-gray-200">
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3"><span
+                                    class="text-blue-800 font-bold">N</span></div>
+                            <div>
+                                <div class="font-medium text-sm">NewsSource Verified</div>
+                                <div class="text-xs text-gray-500">1 hour ago</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-800 text-sm">BREAKING: Controversial new policy proposal sparks heated
+                            debate nationwide. Experts divided on potential economic impact.</p>
+                        <div class="flex justify-between items-center mt-3 text-gray-500 text-xs"><span><i
+                                    class="fas fa-thumbs-up mr-1"></i> 1.2k Likes</span><span><i
+                                    class="fas fa-comment mr-1"></i> 458 Comments</span><span><i
+                                    class="fas fa-share mr-1"></i> 102 Shares</span></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3"><span
+                                    class="text-green-800 font-bold">F</span></div>
+                            <div>
+                                <div class="font-medium text-sm">FitLife Influencer</div>
+                                <div class="text-xs text-gray-500">3 hours ago</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-800 text-sm">Just finished my miracle 7-day detox plan! Feeling amazing and
+                            dropped 10 lbs. If I can do it, anyone can! Link in bio! #detox #health #weightloss</p>
+                        <div class="flex justify-between items-center mt-3 text-gray-500 text-xs"><span><i
+                                    class="fas fa-heart mr-1 text-red-500"></i> 875 Likes</span><span><i
+                                    class="fas fa-comment mr-1"></i> 98 Comments</span><span></span></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                                <span class="text-yellow-800 font-bold">T</span>
+                            </div>
+                            <div>
+                                <div class="font-medium text-sm">TechGadget Reviews</div>
+                                <div class="text-xs text-gray-500">5 hours ago</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-800 text-sm">Is the new UltraPhone X worth the $1500 price tag? We think so!
+                            The camera is unlike anything we've ever seen. Full review on our site.</p>
+                        <div class="flex justify-between items-center mt-3 text-gray-500 text-xs"><span><i
+                                    class="fas fa-thumbs-up mr-1"></i> 550 Likes</span><span><i
+                                    class="fas fa-comment mr-1"></i> 120 Comments</span><span></span></div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-3">Reflection Questions:</h4>
+                    <div class="space-y-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">1. Which post grabbed your
+                                attention most? Why?</label><textarea
+                                class="scenario-reflection w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                                rows="2"></textarea></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">2. Did you find yourself
+                                agreeing or disagreeing strongly with any post? What influenced that?</label><textarea
+                                class="scenario-reflection w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                                rows="2"></textarea></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">3. Can you identify any
+                                potential cognitive biases influencing your reactions or the posts
+                                themselves?</label><textarea
+                                class="scenario-reflection w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                                rows="2"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg mb-6 border border-yellow-200">
+                    <h4 class="text-sm font-semibold text-yellow-800 mb-2">Possible Biases at Play:</h4>
+                    <ul class="list-disc pl-5 text-xs text-yellow-700 space-y-1">
+                        <li><strong>Confirmation Bias:</strong> Favoring information aligning with existing beliefs.
+                        </li>
+                        <li><strong>Authority Bias:</strong> Trusting "Verified" or "Expert" sources more readily.</li>
+                        <li><strong>Bandwagon Effect:</strong> Being influenced by high like/comment counts.</li>
+                        <li><strong>Anchoring:</strong> Being influenced by the initial information (e.g., high price).
+                        </li>
+                        <li><strong>Optimism/Pessimism Bias:</strong> How you interpret the news or detox claims.</li>
+                        <li><strong>Survivorship Bias:</strong> Seeing only the success story (detox), not potential
+                            failures.</li>
+                    </ul>
+                </div>
+
+                <div class="flex justify-center mt-8 pt-4 border-t">
+                    <button id="completeScenarioBtn"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200">Complete
+                        Scenario <i class="fas fa-check ml-2"></i></button>
+                </div>
+            </div>
+
+            <div id="scenarioComplete" class="hidden text-center py-8">
+                <div class="mb-6">
+                    <div class="text-indigo-600 mb-4"><i class="fas fa-lightbulb text-6xl text-yellow-400"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Reflection Complete!</h3>
+                    <p class="text-gray-600">Great job analyzing the scenario and considering potential biases.</p>
+                </div>
+                <div class="bg-indigo-50 p-6 rounded-lg mb-6 border border-indigo-100">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-3">You've earned:</h4>
+                    <div class="flex justify-center items-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-indigo-600 mb-1">+50</div>
+                            <p class="text-sm text-gray-700">Points</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-1">+15</div>
+                            <p class="text-sm text-gray-700">XP</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center space-x-4 mt-8">
+                    <button id="newScenarioBtn"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                            class="fas fa-sync mr-2"></i> Try Another</button>
+                    <button id="closeScenarioCompleteBtn"
+                        class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                            class="fas fa-times mr-2"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div id="levelUpModal" class="modal hidden">
+        <div class="modal-content max-w-md text-center py-8">
+            <div class="mb-6">
+                <div class="text-yellow-400 mb-4"><i class="fas fa-star text-6xl animate-pulse"></i></div>
+                <h3 class="text-3xl font-bold text-gray-800 mb-2">Level Up!</h3>
+                <p class="text-gray-600 text-lg">Congratulations! You've reached</p>
+                <p class="font-bold text-indigo-600 text-4xl mt-1">Level <span id="newLevel">2</span></p>
+            </div>
+            <div class="bg-indigo-50 p-6 rounded-lg mb-6 border border-indigo-100">
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">Rewards & Unlocks:</h4>
+                <ul class="text-left space-y-1 text-sm text-gray-700">
+                    <li class="flex items-center"><i
+                            class="fas fa-unlock text-green-500 mr-2 w-4 text-center"></i><span>New cognitive biases
+                            unlocked!</span></li>
+                    <li class="flex items-center"><i
+                            class="fas fa-check text-green-500 mr-2 w-4 text-center"></i><span>Increased point rewards
+                            for actions</span></li>
+                    <li class="flex items-center"><i
+                            class="fas fa-check text-green-500 mr-2 w-4 text-center"></i><span>Access to harder quiz
+                            questions (soon!)</span></li>
+                    <li class="flex items-center"><i
+                            class="fas fa-check text-green-500 mr-2 w-4 text-center"></i><span>New cosmetic badge for
+                            profile (soon!)</span></li>
+                </ul>
+            </div>
+            <button id="closeLevelUpBtn"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"><i
+                    class="fas fa-thumbs-up mr-2"></i> Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Achievement Unlocked Modal -->
+    <div id="achievementModal" class="modal hidden">
+        <div class="modal-content max-w-md text-center py-8">
+            <div class="mb-6">
+                <!-- Icon populated by JS -->
+                <div id="achievementIconContainer" class="mb-4">
+                    <div id="achievementIcon" class="achievement-badge mx-auto"><i class="fas fa-trophy"></i></div>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-800 mb-2">Achievement Unlocked!</h3>
+                <p id="achievementTitle" class="text-xl font-semibold text-indigo-600">Achievement Name</p>
+                <p id="achievementDescription" class="text-gray-500 mt-1 text-sm">Description of achievement</p>
+            </div>
+            <div class="bg-indigo-50 p-6 rounded-lg mb-6 border border-indigo-100">
+                <h4 class="text-lg font-semibold text-gray-800 mb-3">Rewards:</h4>
+                <div class="flex justify-center items-center space-x-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600 mb-1">+<span id="achievementPoints">0</span>
+                        </div>
+                        <p class="text-sm text-gray-700">Points</p>
+                    </div>
+                    <!-- Can add XP reward here too if needed -->
+                </div>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <button id="shareAchievementBtn"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                        class="fas fa-share-alt mr-2"></i> Share</button>
+                <button id="closeAchievementBtn"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200"><i
+                        class="fas fa-times mr-2"></i> Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bias Detail Modal -->
+    <div id="biasDetailModal" class="modal hidden">
+        <div class="modal-content max-w-2xl">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                <div class="flex items-center">
+                    <h3 id="biasDetailTitle" class="text-2xl font-bold text-gray-800 mr-3">Bias Name</h3>
+                    <span id="biasDetailBadge"
+                        class="badge-unknown text-xs font-bold px-2 py-0.5 rounded-full uppercase">CATEGORY</span>
+                </div>
+                <button id="closeBiasDetailBtn" class="text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Quick Summary</h4>
+                    <p id="biasDetailShortDesc" class="text-base text-gray-700"></p>
+                </div>
+                <div class="border-t pt-4">
+                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Description</h4>
+                    <p id="biasDetailLongDesc" class="text-base text-gray-800 leading-relaxed"></p>
+                </div>
+                <div class="border-t pt-4">
+                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Example</h4>
+                    <p id="biasDetailExample" class="text-base text-gray-700 italic bg-gray-50 p-3 rounded border"></p>
+                </div>
+            </div>
+            <div class="flex justify-end mt-6 pt-4 border-t">
+                <button id="exploreFromModalBtn"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200 text-sm hidden">
+                    <i class="fas fa-check mr-2"></i> Mark as Explored
+                </button>
+                <span id="exploredInModalText"
+                    class="inline-flex items-center bg-green-100 text-green-700 font-medium py-2 px-5 rounded-lg text-sm hidden">
+                    <i class="fas fa-check-circle mr-2"></i> Explored
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Data Scripts First -->
+    <script src="biases.js"></script>
+    <script src="quizScenarios.js"></script>
+    <!-- Load Main Logic Script Last -->
+    <script src="script.js"></script>
+
+    <!-- Overlay for when menu is open -->
+    <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+
+</body>
+
+</html>
