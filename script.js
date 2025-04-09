@@ -576,34 +576,47 @@ function renderBiases() {
     }
 }
 
+function showSelectedBiasOption() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const selectedBiasOption = categoryFilter.querySelector('option[value="selectedBias"]');
+    selectedBiasOption.hidden = false;
+    categoryFilter.value = 'selectedBias';
+}
+
+function hideSelectedBiasOption() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const selectedBiasOption = categoryFilter.querySelector('option[value="selectedBias"]');
+    selectedBiasOption.hidden = true;
+    if (categoryFilter.value === 'selectedBias') {
+        categoryFilter.value = 'all';
+    }
+}
+
 function showRandomBias() {
-    // Filter for biases accessible at the current level
     const availableBiases = biases.filter(b => b.requiredLevel <= gameState.level);
     if (availableBiases.length === 0) {
-        alert("Level up to unlock your first biases!"); // Or handle gracefully
+        alert("Level up to unlock your first biases!");
         return;
     }
 
-    // Prioritize unexplored biases among the available ones
     const unexploredAvailable = availableBiases.filter(b => !gameState.biasesExplored.includes(b.name));
-
     const biasToShow = unexploredAvailable.length > 0
         ? unexploredAvailable[Math.floor(Math.random() * unexploredAvailable.length)]
-        : availableBiases[Math.floor(Math.random() * availableBiases.length)]; // Fallback to any available
+        : availableBiases[Math.floor(Math.random() * availableBiases.length)];
 
-    featuredBiasElement.innerHTML = createFeaturedBiasCard(biasToShow); // This card creation assumes unlocked
+    featuredBiasElement.innerHTML = createFeaturedBiasCard(biasToShow);
     featuredBiasSection.classList.remove('hidden');
     biasesGrid.classList.add('hidden');
-    attachFeaturedBiasListeners(biasToShow); // Listener assumes unlocked
+    attachFeaturedBiasListeners(biasToShow);
+    showSelectedBiasOption();
     window.scrollTo({ top: featuredBiasSection.offsetTop - 20, behavior: 'smooth' });
 }
-
 
 function attachFeaturedBiasListeners(bias) {
     document.getElementById('backToAllBtn')?.addEventListener('click', () => {
         featuredBiasSection.classList.add('hidden');
         biasesGrid.classList.remove('hidden');
-        // Optionally re-render grid to ensure lock status is correct if level changed while viewing featured
+        hideSelectedBiasOption();
         renderBiases();
     });
     // Target the container div now
@@ -765,6 +778,7 @@ function startDailyPick() {
         featuredBiasSection.classList.remove('hidden');
         biasesGrid.classList.add('hidden');
         attachFeaturedBiasListeners(bias);
+        showSelectedBiasOption();
         window.scrollTo({ top: featuredBiasSection.offsetTop - 20, behavior: 'smooth' });
     } else if (bias) {
         alert(`This challenge bias (${bias.name}) requires Level ${bias.requiredLevel}. Keep playing to unlock it!`);
@@ -1189,6 +1203,9 @@ function setupEventListeners() {
     if (categoryFilter) {
         categoryFilter.addEventListener('change', (e) => {
             gameState.currentFilter = e.target.value;
+            if (e.target.value !== 'selectedBias') {
+                hideSelectedBiasOption();
+            }
             featuredBiasSection.classList.add('hidden');
             biasesGrid.classList.remove('hidden');
             renderBiases();
