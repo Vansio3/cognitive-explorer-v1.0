@@ -530,13 +530,13 @@ function renderBiases() {
 
         // --- Filter Logic ---
         // 1. Check level filter: ONLY skip locked biases if the 'all' (All Unlocked) filter is active.
-        if (gameState.currentFilter === 'all' && !isUnlocked) {
-            return; // Skip locked biases only for the "All Unlocked" view
-        }
+        // if (gameState.currentFilter === 'all' && !isUnlocked) {
+        //     return; // Skip locked biases only for the "All Unlocked" view
+        // }
 
         // 2. Check category filter: Skip if a category filter is active AND it doesn't match.
         //    ('all' and 'all-with-locked' filters pass this check).
-        const isCategoryFilterActive = gameState.currentFilter && gameState.currentFilter !== 'all' && gameState.currentFilter !== 'all-with-locked';
+        const isCategoryFilterActive = gameState.currentFilter && gameState.currentFilter !== 'all';
         if (isCategoryFilterActive && bias.category !== gameState.currentFilter) {
             return; // Skip if category doesn't match the active category filter
         }
@@ -548,7 +548,7 @@ function renderBiases() {
         }
         // --- End Filter Logic ---
 
-        // If we reach here, the bias should be displayed (either unlocked, or locked in the 'all-with-locked' view)
+        // If we reach here, the bias should be displayed (unlocked)
         fragment.appendChild(createBiasCard(bias)); // createBiasCard handles visual locking/blurring
         visibleCount++;
     });
