@@ -502,7 +502,6 @@ function createBiasCard(bias) {
 
 function createFeaturedBiasCard(bias) {
     const isExplored = gameState.biasesExplored.includes(bias.name);
-    // Featured bias assumes it's unlocked because it was selected by showRandomBias (which filters)
     const longDescContent = bias.longDescription || "More details coming soon.";
 
     return `
@@ -526,9 +525,12 @@ function createFeaturedBiasCard(bias) {
                 <h3 class="text-base font-semibold text-gray-700 mb-1">Example</h3>
                 <p class="text-sm text-gray-600 italic">${bias.example}</p>
             </div>
-            <div class="mt-5 flex justify-center explore-status">
-                ${!isExplored ? `<button id="exploreFeaturedBiasBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200 text-sm" data-bias="${bias.name}"><i class="fas fa-check mr-2"></i> Mark as Explored</button>`
-            : `<span class="inline-flex items-center bg-green-100 text-green-700 font-medium py-2 px-5 rounded-lg text-sm"><i class="fas fa-check-circle mr-2"></i> Explored</span>`}
+            <div class="mt-5 flex flex-col items-center gap-3">
+                <div class="explore-status">
+                    ${!isExplored ? `<button id="exploreFeaturedBiasBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg transition duration-200 text-sm" data-bias="${bias.name}"><i class="fas fa-check mr-2"></i> Mark as Explored</button>`
+                    : `<span class="inline-flex items-center bg-green-100 text-green-700 font-medium py-2 px-5 rounded-lg text-sm"><i class="fas fa-check-circle mr-2"></i> Explored</span>`}
+                </div>
+                <button id="backToAllBtnMobile" class="md:hidden bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-5 rounded-lg transition duration-200 flex items-center justify-center text-sm w-48"><i class="fas fa-arrow-left mr-2"></i> Back to Grid</button>
             </div>
         </div>`;
 }
@@ -637,12 +639,17 @@ function showRandomBias() {
 }
 
 function attachFeaturedBiasListeners(bias) {
-    document.getElementById('backToAllBtn')?.addEventListener('click', () => {
+    const backToGridHandler = () => {
         featuredBiasSection.classList.add('hidden');
         biasesGrid.classList.remove('hidden');
         hideSelectedBiasOption();
         renderBiases();
-    });
+    };
+
+    // Attach to both buttons
+    document.getElementById('backToAllBtn')?.addEventListener('click', backToGridHandler);
+    document.getElementById('backToAllBtnMobile')?.addEventListener('click', backToGridHandler);
+
     // Target the container div now
     const exploreBtnContainer = document.querySelector('#featuredBias .explore-status');
     const exploreBtn = exploreBtnContainer?.querySelector('#exploreFeaturedBiasBtn');
