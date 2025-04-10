@@ -90,9 +90,9 @@
             </div>
             <ul class="space-y-2">
                 <li><a href="#"
-                    class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
-                    data-tab="home"><i class="fas fa-home w-6 mr-2 text-center"></i> Home</a></li>
-                    
+                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                        data-tab="home"><i class="fas fa-home w-6 mr-2 text-center"></i> Home</a></li>
+
                 <!-- Added a divider for better organization -->
                 <hr class="my-4 border-gray-200 dark:border-gray-600">
                 <li><a href="#main-game-area"
@@ -111,8 +111,14 @@
                 <!-- Added a divider for better organization -->
                 <hr class="my-4 border-gray-200 dark:border-gray-600">
                 <li><a href="#achievementsSection"
-                        class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
-                        data-tab="achievements"><i class="fas fa-award w-6 mr-2 text-center"></i> Achievements</a></li>
+                    class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                    data-tab="achievements"><i class="fas fa-award w-6 mr-2 text-center"></i> Achievements</a></li>
+                
+                    <!-- Added a divider for better organization -->
+                <hr class="my-4 border-gray-200 dark:border-gray-600">
+                <li><a href="#aboutSection"
+                    class="nav-link block py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                    data-tab="about"><i class="fas fa-info-circle w-6 mr-2 text-center"></i> About</a></li>
             </ul>
             <hr class="my-4 border-gray-200 dark:border-gray-600">
             <div class="flex items-center justify-between">
@@ -567,7 +573,7 @@
         </div>
 
         <!-- Introduction Section (Optional - Can be removed if redundant) -->
-        <section class="mb-12 bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
+        <section id="aboutSection" class="mb-12 bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto">
             <h2 class="text-2xl font-bold mb-4 text-gray-800">What Are Cognitive Biases?</h2>
             <p class="text-lg mb-4 text-gray-700">Cognitive biases are systematic patterns of deviation from norm or
                 rationality in judgment. They are mental shortcuts (heuristics) that help us make sense of the world
@@ -955,14 +961,13 @@
     <div id="biasDetailModal" class="modal hidden">
         <div class="modal-content max-w-2xl">
             <!-- Move the close button outside the header and make it sticky -->
-            <button id="closeBiasDetailBtn" 
-                class="sticky-close-btn text-gray-400 hover:text-gray-700 text-2xl">
+            <button id="closeBiasDetailBtn" class="sticky-close-btn text-gray-400 hover:text-gray-700 text-2xl">
                 &times;
             </button>
             <div class="flex justify-between items-start mb-6 pb-4 border-b">
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 flex-1">
                     <h3 id="biasDetailTitle" class="text-2xl font-bold text-gray-800">Bias Name</h3>
-                    <span id="biasDetailBadge" 
+                    <span id="biasDetailBadge"
                         class="badge-unknown text-xs font-bold px-2 py-0.5 rounded-full uppercase inline-block sm:inline">CATEGORY</span>
                 </div>
             </div>
