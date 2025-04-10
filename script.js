@@ -1318,24 +1318,27 @@ function setupEventListeners() {
             const tabId = link.dataset.tab;
             const targetSelector = link.getAttribute('href');
     
-            // First switch the tab if needed
-            if (tabId) {
+            if (tabId === 'home') {
+                // Scroll to top smoothly for home
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Switch to explore tab as default
+                switchTab('explore');
+            } else if (tabId) {
                 switchTab(tabId);
             }
     
             // Close the menu
             closeMenu();
     
-            // Add a small delay to allow DOM updates to complete
-            setTimeout(() => {
-                // Then scroll to the target section
-                if (targetSelector && targetSelector.startsWith('#')) {
+            // Only scroll if not home and has target
+            if (tabId !== 'home' && targetSelector && targetSelector.startsWith('#')) {
+                setTimeout(() => {
                     const targetElement = document.querySelector(targetSelector);
                     if (targetElement) {
                         targetElement.scrollIntoView({ behavior: 'smooth' });
                     }
-                }
-            }, 100); // Small delay to ensure DOM updates are complete
+                }, 100);
+            }
         });
     });
 
